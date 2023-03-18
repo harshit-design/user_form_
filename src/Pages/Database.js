@@ -1,7 +1,13 @@
+import {useLocation} from 'react-router-dom';
+
 const Database = () =>{
+
+    const location = useLocation();
+
     return(
     <div>
-        harshit
+        {location.state.name}
+        {/* harshit */}
     </div>
     );
 }
