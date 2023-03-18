@@ -22,25 +22,25 @@
     const myJSON = JSON.stringify(myObject,null,2);
     navigate('/Database',{state:{id:1,name:myJSON}});
 
-    const res = await fetch("/register",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            email
-        })
-    });
-    const data = await res.json();
-        console.log(data);
+//     const res = await fetch("/register",{
+//         method:"POST",
+//         headers:{
+//             "Content-Type":"application/json"
+//         },
+//         body:JSON.stringify({
+//             email
+//         })
+//     });
+//     const data = await res.json();
+//         console.log(data);
 
-        if (data.status === 401 || !data) {
-            console.log("error")
-        } else {
-            // setShow(true);
-            setEmail("")
-            console.log("Email sent")
-        }
+//         if (data.status === 401 || !data) {
+//             console.log("error")
+//         } else {
+//             // setShow(true);
+//             setEmail("")
+//             console.log("Email sent")
+//         }
   };
 
     const [greater_than,setGreater_than]=useState(false);
