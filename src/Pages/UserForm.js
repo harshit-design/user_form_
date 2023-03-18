@@ -1,42 +1,46 @@
   import React from "react";
   import { useState } from "react";
-  import { send } from 'emailjs-com';
-  import {Link, Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom';
-  import Database from './Database';
+  import {useNavigate} from 'react-router-dom';
 
-
-
- const Form=()=>{
-    // const [start_date,setStart_date]=useState(new Date());
+ const User_form_=()=>{
     const navigate = useNavigate();
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [phone,setPhone] = useState('');
     const [dob,setDob] = useState('');
-    const [message,setMessage] = useState('');
 
-  const onSubmitHandler = event => {
+  const onSubmitHandler = async(event) => {
     event.preventDefault();
+    
+    const myObject = {
+        "UserName" : name,
+        "Email is" : email,
+        "Date of Birth is" : dob,
+        "Phone no. is" : phone
+    }
 
-    // const onNameChange = (e) =>{
-    //     setName(e.target.value);
-    // }
-    // const onEmailChange = (e) =>{
-    //     setEmail(e.target.value);
-    // }
-    // const onPhoneChange = (e) =>{
-    //     setPhone(e.target.value);
-    // } 
+    const myJSON = JSON.stringify(myObject,null,2);
+    navigate('/Database',{state:{id:1,name:myJSON}});
 
-    // <div>name is {phone}</div>
-    // check(dob);
-    setMessage(`Name is -  ${name} 
-    Email is - ${email} 
-    Date of Birth - ${dob}
-    Phone no. is - ${phone}`);
+    const res = await fetch("/register",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            email
+        })
+    });
+    const data = await res.json();
+        console.log(data);
 
-    // 👇️ redirect to /Database
-    // navigate('/Database');
+        if (data.status === 401 || !data) {
+            console.log("error")
+        } else {
+            // setShow(true);
+            setEmail("")
+            console.log("Email sent")
+        }
   };
 
     const [greater_than,setGreater_than]=useState(false);
@@ -67,7 +71,6 @@
     return(
         <div class="container py-5 h-00">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                {/* <div class="col-12 col-md-8 col-lg-6 col-xl-5"> */}
                     <div class="card-body p-5 text-center">
                     <form>
                             <div>
@@ -86,6 +89,7 @@
                         <div>
                             <label for="email">Email</label>
                             <input type="email" id="email" placeholder="enter email" 
+                            value={email}
                              onChange = {(e)=>setEmail(e.target.value)} required/>
                         </div>
 
@@ -97,13 +101,11 @@
 
                         <button type="submit" disabled={!greater_than} onClick={onSubmitHandler}>Submit</button>
                         </form>
-                        <p>{message}</p>
                         </div>
                 </div>
-            {/* </div> */}
       </div>
         
     );
 }
 
-export default Form;
+export default User_form_;
